@@ -31,11 +31,6 @@ android {
     }
 }
 
-repositories {
-    maven { url "https://jitpack.io" }
-    maven { url "http://mvn.leancloud.cn/nexus/content/repositories/releases" }
-}
-
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
