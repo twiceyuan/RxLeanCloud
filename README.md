@@ -21,12 +21,30 @@ LeanCloud Android SDK 有很多的异步方法，它们大多数情况下需要�
 ```Java
 // 测试 SDK 是否正常工作的代码
 AVObject testObject = new AVObject("TestObject");
-testObject.put("words","Hello World!");
+testObject.put("words", "Hello World!");
+// 保存对象
 testObject.saveInBackground(new SaveCallback() {
     @Override
     public void done(AVException e) {
-        if(e == null){
-            Log.d("saved","simple success!");
+        if (e == null) {
+            String objectId = testObject.getObjectId();
+            // 创建角色
+            AVRole role = new AVRole(objectId);
+            role.saveInBackground(new SaveCallback() {
+                @Override public void done(AVException e) {
+                    // 设置角色权限
+                    AVACL avacl = new AVACL();
+                    avacl.setRoleReadAccess(role, true);
+                    testObject.saveInBackground(new SaveCallback() {
+                        @Override public void done(AVException e) {
+                            if (e == null) {
+                                // 保存成功
+                                Log.i("saved", "save success!");
+                            }
+                        }
+                    });
+                }
+            });
         }
     }
 });
@@ -36,9 +54,25 @@ testObject.saveInBackground(new SaveCallback() {
 
 ```Java
 AVObject testObject = new AVObject("TestObject");
-testObject.put("words","Hello World!");
-Observable.create(subscriber -> testObject.saveInBackground(LeanCallbacks.saveRx(subscriber)))
-    .subscribe(o -> Log.d("saved","rx success!"));
+testObject.put("words", "Hello World!");
+Observable.<AVObject>create(subscriber -> {
+    // 保存对象
+    testObject.setFetchWhenSave(true);
+    testObject.saveInBackground(LeanCallbacks.saveRx(subscriber));
+}).<AVRole>flatMap(object -> Observable.create(subscriber -> {
+    // 创建角色
+    AVRole role = new AVRole(object.getObjectId());
+    role.setFetchWhenSave(true);
+    role.saveInBackground(LeanCallbacks.saveRx(subscriber));
+})).flatMap(role -> Observable.create(subscriber -> {
+    // 设置角色权限
+    testObject.setACL(new AVACL());
+    testObject.getACL().setRoleReadAccess(role, true);
+    testObject.saveInBackground(LeanCallbacks.saveRx(subscriber));
+})).subscribe(success -> {
+    // 保存成功
+    Log.d("saved", "rx save success");
+});
 ```
 
 并且将 Observable 返回，就可以利用 RxJava 的特性组合根据你的业务逻辑轻松组合串联这些接口了。
