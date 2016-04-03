@@ -120,5 +120,5 @@ public class LeanCallbacks {
         return serveDate((date, e) -> LeanWrap.wrap(subscriber, date, e));
     }
 
-    // TODO: 4/4/16 实现所有回调抽象方法到接口的转换 
+    // TODO: 4/4/16 实现所有回调抽象方法到接口的转换
 }
