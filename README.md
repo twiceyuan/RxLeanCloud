@@ -78,6 +78,48 @@ Observable.create(subscriber -> {
 });
 ```
 
-并且将 Observable 返回，就可以利用 RxJava 的特性组合根据你的业务逻辑轻松组合串联这些接口了。
+并且将 Observable 返回，就可以利用 RxJava 的特性组合根据你的业务逻辑轻松组合串联这些接口了：
+
+```Java
+private void rx() {
+    AVObject testObject = new AVObject("TestObject");
+    testObject.put("words", "Hello World!");
+    saveInBackground(testObject)
+            .flatMap(object -> createRole(testObject.getObjectId()))
+            .flatMap(role -> setAclAndSave(testObject, role))
+            .subscribe(success -> {
+                // 保存成功
+                Log.d("saved", "rx save success");
+            });
+}
+
+// 保存对象
+public Observable<Void> saveInBackground(AVObject object) {
+    return Observable.create(subscriber -> {
+        object.setFetchWhenSave(true);
+        object.saveInBackground(LeanCallbacks.saveRx(subscriber));
+    });
+}
+
+// 创建角色
+public Observable<AVRole> createRole(String roleName) {
+    return Observable.create(subscriber -> {
+        AVACL acl = new AVACL();
+        acl.setPublicReadAccess(true);
+        AVRole role = new AVRole(roleName, acl);
+        role.setFetchWhenSave(true);
+        role.saveInBackground(LeanCallbacks.save((o, e) -> LeanWrap.wrap(subscriber, role, e)));
+    });
+}
+
+// 设置角色权限
+public Observable<Void> setAclAndSave(AVObject object, AVRole role) {
+    return Observable.create(subscriber -> {
+        object.setACL(new AVACL());
+        object.getACL().setRoleReadAccess(role, true);
+        object.saveInBackground(LeanCallbacks.saveRx(subscriber));
+    });
+}
+```
 
 目前项目还在进行，更多例子会尽快添加到这个文档中。
