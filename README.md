@@ -1,5 +1,7 @@
 # RxLeanCloud
 
+[![](https://jitpack.io/v/twiceyuan/RxLeanCloud.svg)](https://jitpack.io/#twiceyuan/RxLeanCloud)
+
 RxJava + LeanCloud Android SDK（WIP）
 
 LeanCloud Android SDK 有很多的异步方法，它们大多数情况下需要嵌套执行，所以你的代码很可能是这种形状的：
