@@ -11,6 +11,7 @@ import com.avos.avoscloud.AVRole;
 import com.avos.avoscloud.SaveCallback;
 
 import cn.leancloud.rx.LeanCallbacks;
+import cn.leancloud.rx.LeanWrap;
 import rx.Observable;
 
 public class MainActivity extends AppCompatActivity {
@@ -33,9 +34,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void done(AVException e) {
                 if (e == null) {
-                    String objectId = testObject.getObjectId();
+                    AVACL acl = new AVACL();
+                    acl.setPublicReadAccess(true);
                     // 创建角色
-                    AVRole role = new AVRole(objectId);
+                    AVRole role = new AVRole(testObject.getObjectId(), acl);
                     role.saveInBackground(new SaveCallback() {
                         @Override public void done(AVException e) {
                             // 设置角色权限
@@ -59,15 +61,17 @@ public class MainActivity extends AppCompatActivity {
     private void rx() {
         AVObject testObject = new AVObject("TestObject");
         testObject.put("words", "Hello World!");
-        Observable.<AVObject>create(subscriber -> {
+        Observable.create(subscriber -> {
             // 保存对象
             testObject.setFetchWhenSave(true);
             testObject.saveInBackground(LeanCallbacks.saveRx(subscriber));
         }).<AVRole>flatMap(object -> Observable.create(subscriber -> {
+            AVACL acl = new AVACL();
+            acl.setPublicReadAccess(true);
             // 创建角色
-            AVRole role = new AVRole(object.getObjectId());
+            AVRole role = new AVRole(testObject.getObjectId(), acl);
             role.setFetchWhenSave(true);
-            role.saveInBackground(LeanCallbacks.saveRx(subscriber));
+            role.saveInBackground(LeanCallbacks.save((o, e) -> LeanWrap.wrap(subscriber, role, e)));
         })).flatMap(role -> Observable.create(subscriber -> {
             // 设置角色权限
             testObject.setACL(new AVACL());

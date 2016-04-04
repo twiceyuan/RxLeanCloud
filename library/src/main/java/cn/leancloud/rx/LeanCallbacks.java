@@ -62,7 +62,7 @@ public class LeanCallbacks {
      *
      * {@link AVObject#saveInBackground(SaveCallback)} 时使用
      */
-    public static <T> SaveCallback saveRx(Subscriber<T> subscriber) {
+    public static SaveCallback saveRx(Subscriber<? super Void> subscriber) {
         return save((o, e) -> LeanWrap.wrap(subscriber, null, e));
     }
 
