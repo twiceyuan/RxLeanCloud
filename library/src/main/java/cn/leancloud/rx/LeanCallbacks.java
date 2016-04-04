@@ -1,17 +1,42 @@
 package cn.leancloud.rx;
 
+import com.avos.avoscloud.AVCloudQueryResult;
 import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVFile;
 import com.avos.avoscloud.AVFriendship;
 import com.avos.avoscloud.AVMobilePhoneVerifyCallback;
 import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.AVStatus;
+import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.CloudQueryCallback;
+import com.avos.avoscloud.CountCallback;
+import com.avos.avoscloud.DeleteCallback;
 import com.avos.avoscloud.FindCallback;
+import com.avos.avoscloud.FollowCallback;
+import com.avos.avoscloud.FollowersAndFolloweesCallback;
+import com.avos.avoscloud.FunctionCallback;
 import com.avos.avoscloud.GetCallback;
+import com.avos.avoscloud.GetDataCallback;
+import com.avos.avoscloud.GetFileCallback;
+import com.avos.avoscloud.InboxStatusFindCallback;
+import com.avos.avoscloud.LogInCallback;
+import com.avos.avoscloud.ProgressCallback;
+import com.avos.avoscloud.RefreshCallback;
+import com.avos.avoscloud.RequestEmailVerifyCallback;
+import com.avos.avoscloud.RequestMobileCodeCallback;
+import com.avos.avoscloud.RequestPasswordResetCallback;
 import com.avos.avoscloud.SaveCallback;
+import com.avos.avoscloud.SendCallback;
+import com.avos.avoscloud.SignUpCallback;
+import com.avos.avoscloud.StatusCallback;
+import com.avos.avoscloud.StatusListCallback;
+import com.avos.avoscloud.UpdatePasswordCallback;
 import com.avos.avoscloud.callback.AVFriendshipCallback;
 import com.avos.avoscloud.callback.AVServerDateCallback;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -20,7 +45,7 @@ import rx.Subscriber;
  * Created by twiceYuan on 4/3/16.
  * Email: i@twiceyuan.com
  * Site: http://twiceyuan.com
- *
+ * <p>
  * 用 RxJava 包装 LeanCloud 中的各种回调
  */
 @SuppressWarnings("unused")
@@ -39,7 +64,7 @@ public class LeanCallbacks {
 
     /**
      * 使用 {@link rx.Observable#create(Observable.OnSubscribe)} 创建 Observable 时使用
-     *
+     * <p>
      * {@link com.avos.avoscloud.AVQuery#findInBackground(FindCallback)} 时使用
      */
     public static <T extends AVObject> FindCallback<T> findRx(Subscriber<? super List<T>> s) {
@@ -59,7 +84,7 @@ public class LeanCallbacks {
 
     /**
      * 使用 {@link rx.Observable#create(Observable.OnSubscribe)} 创建 Observable 时使用
-     *
+     * <p>
      * {@link AVObject#saveInBackground(SaveCallback)} 时使用
      */
     public static SaveCallback saveRx(Subscriber<? super Void> subscriber) {
@@ -120,5 +145,243 @@ public class LeanCallbacks {
         return serveDate((date, e) -> LeanWrap.wrap(subscriber, date, e));
     }
 
-    // TODO: 4/4/16 实现所有回调抽象方法到接口的转换
+    public static CloudQueryCallback<AVCloudQueryResult> cloudQuery(Callback<AVCloudQueryResult> callback) {
+        return new CloudQueryCallback<AVCloudQueryResult>() {
+            @Override public void done(AVCloudQueryResult result, AVException e) {
+                callback.call(result, e);
+            }
+        };
+    }
+
+    public static CloudQueryCallback<AVCloudQueryResult> cloudQueryRx(Subscriber<AVCloudQueryResult> subscriber) {
+        return cloudQuery((result, e) -> LeanWrap.wrap(subscriber, result, e));
+    }
+
+    public static CountCallback count(Callback<Integer> callback) {
+        return new CountCallback() {
+            @Override public void done(int i, AVException e) {
+                callback.call(i, e);
+            }
+        };
+    }
+
+    public static CountCallback countRx(Subscriber<? super Integer> subscriber) {
+        return count((integer, e) -> LeanWrap.wrap(subscriber, integer, e));
+    }
+
+    public static DeleteCallback delete(Callback<Void> callback) {
+        return new DeleteCallback() {
+            @Override public void done(AVException e) {
+                callback.call(null, e);
+            }
+        };
+    }
+
+    public static DeleteCallback deleteRx(Subscriber<Void> subscriber) {
+        return delete((aVoid, e) -> LeanWrap.wrap(subscriber, aVoid, e));
+    }
+
+    public static <T extends AVObject> FollowCallback<T> follow(Callback<T> callback) {
+        return new FollowCallback<T>() {
+            @Override public void done(T t, AVException e) {
+                callback.call(t, e);
+            }
+        };
+    }
+
+    public static <T extends AVObject> FollowCallback<T> followRx(Subscriber<? super T> subscriber) {
+        return follow((t, e) -> LeanWrap.wrap(subscriber, t, e));
+    }
+
+    public static <T extends AVObject> FollowersAndFolloweesCallback<T> followersAndFollowees(Callback<Map<String, T>> callback) {
+        return new FollowersAndFolloweesCallback<T>() {
+            @Override public void done(Map<String, T> map, AVException e) {
+                callback.call(map, e);
+            }
+        };
+    }
+
+    public static <T extends AVObject> FollowersAndFolloweesCallback<T> followersAndFolloweesRx(Subscriber<Map<String, ? super T>> subscriber) {
+        return followersAndFollowees((stringTMap, e) -> LeanWrap.wrap(subscriber, stringTMap, e));
+    }
+
+    public static <T> FunctionCallback<T> function(Callback<T> callback) {
+        return new FunctionCallback<T>() {
+            @Override public void done(T t, AVException e) {
+                callback.call(t, e);
+            }
+        };
+    }
+
+    public static <T> FunctionCallback<T> functionRx(Subscriber<? super T> subscriber) {
+        return function((t, e) -> LeanWrap.wrap(subscriber, t, e));
+    }
+
+    public static GetDataCallback getData(Callback<byte[]> callback) {
+        return new GetDataCallback() {
+            @Override public void done(byte[] bytes, AVException e) {
+                callback.call(bytes, e);
+            }
+        };
+    }
+
+    public static GetDataCallback getDataRx(Subscriber<byte[]> subscriber) {
+        return getData((bytes, e) -> LeanWrap.wrap(subscriber, bytes, e));
+    }
+
+    public static <T extends AVFile> GetFileCallback<T> getFile(Callback<T> callback) {
+        return new GetFileCallback<T>() {
+            @Override public void done(T t, AVException e) {
+                callback.call(t, e);
+            }
+        };
+    }
+
+    public static <T extends AVFile> GetFileCallback<T> getFileRx(Subscriber<T> subscriber) {
+        return getFile((t, e) -> LeanWrap.wrap(subscriber, t, e));
+    }
+
+    public static InboxStatusFindCallback inboxStatusFind(Callback<List<AVStatus>> callback) {
+        return new InboxStatusFindCallback() {
+            @Override public void done(List<AVStatus> list, AVException e) {
+                callback.call(list, e);
+            }
+        };
+    }
+
+    public static InboxStatusFindCallback inboxStatusFindRx(Subscriber<? super List<AVStatus>> subscriber) {
+        return inboxStatusFind((avStatuses, e) -> LeanWrap.wrap(subscriber, avStatuses, e));
+    }
+
+    public static <T extends AVUser> LogInCallback<T> login(Callback<T> callback) {
+        return new LogInCallback<T>() {
+            @Override public void done(T t, AVException e) {
+                callback.call(t, e);
+            }
+        };
+    }
+
+    public static <T extends AVUser> LogInCallback<T> loginRx(Subscriber<? super T> subscriber) {
+        return login((t, e) -> LeanWrap.wrap(subscriber, t, e));
+    }
+
+    public static ProgressCallback progress(Callback<Integer> callback) {
+        return new ProgressCallback() {
+            @Override public void done(Integer integer) {
+                callback.call(integer, null);
+            }
+        };
+    }
+
+    public static ProgressCallback progressRx(Subscriber<Integer> subscriber) {
+        return progress((integer, e) -> LeanWrap.wrap(subscriber, integer, null));
+    }
+
+    public static <T extends AVObject> RefreshCallback<T> refresh(Callback<T> callback) {
+        return new RefreshCallback<T>() {
+            @Override public void done(T t, AVException e) {
+                callback.call(t, e);
+            }
+        };
+    }
+
+    public static <T extends AVObject> RefreshCallback<T> refreshRx(Subscriber<? super T> subscriber) {
+        return refresh((t, e) -> LeanWrap.wrap(subscriber, t, e));
+    }
+
+    public static RequestEmailVerifyCallback requestEmailVerify(Callback<Void> callback) {
+        return new RequestEmailVerifyCallback() {
+            @Override public void done(AVException e) {
+                callback.call(null, e);
+            }
+        };
+    }
+
+    public static RequestEmailVerifyCallback requestEmailVerifyRx(Subscriber<Void> subscriber) {
+        return requestEmailVerify((aVoid, e) -> LeanWrap.wrap(subscriber, aVoid, e));
+    }
+
+    public static RequestMobileCodeCallback requestMobileCode(Callback<Void> callback) {
+        return new RequestMobileCodeCallback() {
+            @Override public void done(AVException e) {
+                callback.call(null, e);
+            }
+        };
+    }
+
+    public static RequestMobileCodeCallback requestMobileCodeRx(Subscriber<Void> subscriber) {
+        return requestMobileCode((aVoid, e) -> LeanWrap.wrap(subscriber, aVoid, e));
+    }
+
+    public static RequestPasswordResetCallback requestPasswordReset(Callback<Void> callback) {
+        return new RequestPasswordResetCallback() {
+            @Override public void done(AVException e) {
+                callback.call(null, e);
+            }
+        };
+    }
+
+    public static RequestPasswordResetCallback requestPasswordResetRx(Subscriber<Void> subscriber) {
+        return requestPasswordReset((aVoid, e) -> LeanWrap.wrap(subscriber, aVoid, e));
+    }
+
+    public static SendCallback send(Callback<Void> callback) {
+        return new SendCallback() {
+            @Override public void done(AVException e) {
+                callback.call(null, e);
+            }
+        };
+    }
+
+    public static SendCallback sendRx(Subscriber<Void> subscriber) {
+        return send((aVoid, e) -> LeanWrap.wrap(subscriber, aVoid, e));
+    }
+
+    public static SignUpCallback signUp(Callback<Void> callback) {
+        return new SignUpCallback() {
+            @Override public void done(AVException e) {
+                callback.call(null, e);
+            }
+        };
+    }
+
+    public static SignUpCallback signUpRx(Subscriber<Void> subscriber) {
+        return signUp((aVoid, e) -> LeanWrap.wrap(subscriber, aVoid, e));
+    }
+
+    public static StatusCallback status(Callback<AVStatus> callback) {
+        return new StatusCallback() {
+            @Override public void done(AVStatus avStatus, AVException e) {
+                callback.call(avStatus, e);
+            }
+        };
+    }
+
+    public static StatusCallback statusRx(Subscriber<AVStatus> subscriber) {
+        return status((avStatus, e) -> LeanWrap.wrap(subscriber, avStatus, e));
+    }
+
+    public static StatusListCallback statusList(Callback<List<AVStatus>> callback) {
+        return new StatusListCallback() {
+            @Override public void done(List<AVStatus> list, AVException e) {
+                callback.call(list, e);
+            }
+        };
+    }
+
+    public static StatusListCallback statusListRx(Subscriber<List<AVStatus>> subscriber) {
+        return statusList((avStatuses, e) -> LeanWrap.wrap(subscriber, avStatuses, e));
+    }
+
+    public static UpdatePasswordCallback updatePassword(Callback<Void> callback) {
+        return new UpdatePasswordCallback() {
+            @Override public void done(AVException e) {
+                callback.call(null, e);
+            }
+        };
+    }
+
+    public static UpdatePasswordCallback updatePasswordRx(Subscriber<Void> subscriber) {
+        return updatePassword((aVoid, e) -> LeanWrap.wrap(subscriber, aVoid, e));
+    }
 }
