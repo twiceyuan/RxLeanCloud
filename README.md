@@ -27,9 +27,10 @@ testObject.saveInBackground(new SaveCallback() {
     @Override
     public void done(AVException e) {
         if (e == null) {
-            String objectId = testObject.getObjectId();
+            AVACL acl = new AVACL();
+            acl.setPublicReadAccess(true);
             // 创建角色
-            AVRole role = new AVRole(objectId);
+            AVRole role = new AVRole(testObject.getObjectId(), acl);
             role.saveInBackground(new SaveCallback() {
                 @Override public void done(AVException e) {
                     // 设置角色权限
@@ -55,15 +56,17 @@ testObject.saveInBackground(new SaveCallback() {
 ```Java
 AVObject testObject = new AVObject("TestObject");
 testObject.put("words", "Hello World!");
-Observable.<AVObject>create(subscriber -> {
+Observable.create(subscriber -> {
     // 保存对象
     testObject.setFetchWhenSave(true);
     testObject.saveInBackground(LeanCallbacks.saveRx(subscriber));
 }).<AVRole>flatMap(object -> Observable.create(subscriber -> {
+    AVACL acl = new AVACL();
+    acl.setPublicReadAccess(true);
     // 创建角色
-    AVRole role = new AVRole(object.getObjectId());
+    AVRole role = new AVRole(testObject.getObjectId(), acl);
     role.setFetchWhenSave(true);
-    role.saveInBackground(LeanCallbacks.saveRx(subscriber));
+    role.saveInBackground(LeanCallbacks.save((o, e) -> LeanWrap.wrap(subscriber, role, e)));
 })).flatMap(role -> Observable.create(subscriber -> {
     // 设置角色权限
     testObject.setACL(new AVACL());
