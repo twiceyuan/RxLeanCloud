@@ -1,6 +1,10 @@
 package cn.leancloud.rx;
 
+import com.avos.avoscloud.SaveCallback;
+
+import rx.Observable;
 import rx.Subscriber;
+import rx.functions.Action1;
 
 /**
  * Created by twiceYuan on 4/3/16.
@@ -18,5 +22,9 @@ public class LeanWrap {
         } else {
             subscriber.onError(e);
         }
+    }
+
+    public static Observable<Void> save(Action1<SaveCallback> callback) {
+        return Observable.create(subscriber -> callback.call(LeanCallbacks.saveRx(subscriber)));
     }
 }

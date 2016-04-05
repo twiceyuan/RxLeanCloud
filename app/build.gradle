@@ -38,8 +38,8 @@ repositories {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    // compile project(':library')
-    compile 'com.github.twiceyuan:RxLeanCloud:alpha'
+    compile project(':library')
+    // compile 'com.github.twiceyuan:RxLeanCloud:alpha'
 
     compile 'com.android.support:appcompat-v7:23.2.1'
 

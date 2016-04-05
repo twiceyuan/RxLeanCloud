@@ -10,7 +10,6 @@ import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVRole;
 import com.avos.avoscloud.SaveCallback;
 
-import cn.leancloud.rx.LeanCallbacks;
 import cn.leancloud.rx.LeanWrap;
 import rx.Observable;
 
@@ -58,6 +57,25 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void rxSimple() {
+        AVObject testObject = new AVObject("TestObject");
+        testObject.put("words", "Hello World!");
+        LeanWrap.save(testObject::saveInBackground).flatMap(aVoid -> {
+            AVACL acl = new AVACL();
+            acl.setPublicReadAccess(true);
+            AVRole role = new AVRole(testObject.getObjectId(), acl);
+            role.setFetchWhenSave(true);
+            return LeanWrap.save(role::saveInBackground).map(v -> role);
+        }).flatMap(role -> {
+            testObject.setACL(new AVACL());
+            testObject.getACL().setRoleReadAccess(role, true);
+            return LeanWrap.save(testObject::saveInBackground);
+        }).subscribe(success -> {
+            // 保存成功
+            Log.d("saved", "rx save success");
+        });
+    }
+
     private void rx() {
         AVObject testObject = new AVObject("TestObject");
         testObject.put("words", "Hello World!");
@@ -72,29 +90,23 @@ public class MainActivity extends AppCompatActivity {
 
     // 保存对象
     public Observable<Void> saveInBackground(AVObject object) {
-        return Observable.create(subscriber -> {
-            object.setFetchWhenSave(true);
-            object.saveInBackground(LeanCallbacks.saveRx(subscriber));
-        });
+        object.setFetchWhenSave(true);
+        return LeanWrap.save(object::saveInBackground);
     }
 
     // 创建角色
     public Observable<AVRole> createRole(String roleName) {
-        return Observable.create(subscriber -> {
-            AVACL acl = new AVACL();
-            acl.setPublicReadAccess(true);
-            AVRole role = new AVRole(roleName, acl);
-            role.setFetchWhenSave(true);
-            role.saveInBackground(LeanCallbacks.save((o, e) -> LeanWrap.wrap(subscriber, role, e)));
-        });
+        AVACL acl = new AVACL();
+        acl.setPublicReadAccess(true);
+        AVRole role = new AVRole(roleName, acl);
+        role.setFetchWhenSave(true);
+        return LeanWrap.save(role::saveInBackground).map(aVoid -> role);
     }
 
     // 设置角色权限
     public Observable<Void> setAclAndSave(AVObject object, AVRole role) {
-        return Observable.create(subscriber -> {
-            object.setACL(new AVACL());
-            object.getACL().setRoleReadAccess(role, true);
-            object.saveInBackground(LeanCallbacks.saveRx(subscriber));
-        });
+        object.setACL(new AVACL());
+        object.getACL().setRoleReadAccess(role, true);
+        return LeanWrap.save(object::saveInBackground);
     }
 }
