@@ -8,7 +8,7 @@ import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.SaveCallback;
 
-import cn.leancloud.rx.LeanWrap;
+import cn.leancloud.rx.RxLeanCloud;
 import rx.Observable;
 
 public class MainActivity extends AppCompatActivity {
@@ -66,6 +66,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void withRxLeanCloud(AVObject object) {
-        LeanWrap.save(object::saveInBackground).subscribe(aVoid -> Log.i("saved", "save success!"));
+        RxLeanCloud.save(object::saveInBackground).subscribe(aVoid -> Log.i("saved", "save success!"));
     }
 }

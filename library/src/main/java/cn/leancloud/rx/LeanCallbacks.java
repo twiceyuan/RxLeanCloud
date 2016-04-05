@@ -68,7 +68,7 @@ public class LeanCallbacks {
      * {@link com.avos.avoscloud.AVQuery#findInBackground(FindCallback)} 时使用
      */
     public static <T extends AVObject> FindCallback<T> findRx(Subscriber<? super List<T>> s) {
-        return find((list, e) -> LeanWrap.wrap(s, list, e));
+        return find((list, e) -> RxLeanCloud.wrap(s, list, e));
     }
 
     /**
@@ -88,7 +88,7 @@ public class LeanCallbacks {
      * {@link AVObject#saveInBackground(SaveCallback)} 时使用
      */
     public static SaveCallback saveRx(Subscriber<? super Void> subscriber) {
-        return save((o, e) -> LeanWrap.wrap(subscriber, null, e));
+        return save((o, e) -> RxLeanCloud.wrap(subscriber, null, e));
     }
 
     /**
@@ -106,7 +106,7 @@ public class LeanCallbacks {
      * 使用 {@link rx.Observable#create(Observable.OnSubscribe)} 创建 Observable 时使用
      */
     public static <T extends AVObject> GetCallback<T> getRx(Subscriber<? super T> subscriber) {
-        return get((avObject, e) -> LeanWrap.wrap(subscriber, avObject, e));
+        return get((avObject, e) -> RxLeanCloud.wrap(subscriber, avObject, e));
     }
 
     public static AVFriendshipCallback friendship(Callback<AVFriendship> callback) {
@@ -118,7 +118,7 @@ public class LeanCallbacks {
     }
 
     public static AVFriendshipCallback friendshipRx(Subscriber<? super AVFriendship> subscriber) {
-        return friendship((friendship, e) -> LeanWrap.wrap(subscriber, friendship, e));
+        return friendship((friendship, e) -> RxLeanCloud.wrap(subscriber, friendship, e));
     }
 
     public static <T> AVMobilePhoneVerifyCallback phoneVerify(Callback<T> callback) {
@@ -130,7 +130,7 @@ public class LeanCallbacks {
     }
 
     public static <T> AVMobilePhoneVerifyCallback phoneVerifyRx(Subscriber<? super T> subscriber) {
-        return phoneVerify((o, e) -> LeanWrap.wrap(subscriber, null, e));
+        return phoneVerify((o, e) -> RxLeanCloud.wrap(subscriber, null, e));
     }
 
     public static AVServerDateCallback serveDate(Callback<Date> callback) {
@@ -142,7 +142,7 @@ public class LeanCallbacks {
     }
 
     public static AVServerDateCallback serveDateRx(Subscriber<? super Date> subscriber) {
-        return serveDate((date, e) -> LeanWrap.wrap(subscriber, date, e));
+        return serveDate((date, e) -> RxLeanCloud.wrap(subscriber, date, e));
     }
 
     public static CloudQueryCallback<AVCloudQueryResult> cloudQuery(Callback<AVCloudQueryResult> callback) {
@@ -154,7 +154,7 @@ public class LeanCallbacks {
     }
 
     public static CloudQueryCallback<AVCloudQueryResult> cloudQueryRx(Subscriber<? super AVCloudQueryResult> subscriber) {
-        return cloudQuery((result, e) -> LeanWrap.wrap(subscriber, result, e));
+        return cloudQuery((result, e) -> RxLeanCloud.wrap(subscriber, result, e));
     }
 
     public static CountCallback count(Callback<Integer> callback) {
@@ -166,7 +166,7 @@ public class LeanCallbacks {
     }
 
     public static CountCallback countRx(Subscriber<? super Integer> subscriber) {
-        return count((integer, e) -> LeanWrap.wrap(subscriber, integer, e));
+        return count((integer, e) -> RxLeanCloud.wrap(subscriber, integer, e));
     }
 
     public static DeleteCallback delete(Callback<Void> callback) {
@@ -178,7 +178,7 @@ public class LeanCallbacks {
     }
 
     public static DeleteCallback deleteRx(Subscriber<? super Void> subscriber) {
-        return delete((aVoid, e) -> LeanWrap.wrap(subscriber, aVoid, e));
+        return delete((aVoid, e) -> RxLeanCloud.wrap(subscriber, aVoid, e));
     }
 
     public static <T extends AVObject> FollowCallback<T> follow(Callback<T> callback) {
@@ -190,7 +190,7 @@ public class LeanCallbacks {
     }
 
     public static <T extends AVObject> FollowCallback<T> followRx(Subscriber<? super T> subscriber) {
-        return follow((t, e) -> LeanWrap.wrap(subscriber, t, e));
+        return follow((t, e) -> RxLeanCloud.wrap(subscriber, t, e));
     }
 
     public static <T extends AVObject> FollowersAndFolloweesCallback<T> followersAndFollowees(Callback<Map<String, T>> callback) {
@@ -202,7 +202,7 @@ public class LeanCallbacks {
     }
 
     public static <T extends AVObject> FollowersAndFolloweesCallback<T> followersAndFolloweesRx(Subscriber<? super Map<String, ? super T>> subscriber) {
-        return followersAndFollowees((stringTMap, e) -> LeanWrap.wrap(subscriber, stringTMap, e));
+        return followersAndFollowees((stringTMap, e) -> RxLeanCloud.wrap(subscriber, stringTMap, e));
     }
 
     public static <T> FunctionCallback<T> function(Callback<T> callback) {
@@ -214,7 +214,7 @@ public class LeanCallbacks {
     }
 
     public static <T> FunctionCallback<T> functionRx(Subscriber<? super T> subscriber) {
-        return function((t, e) -> LeanWrap.wrap(subscriber, t, e));
+        return function((t, e) -> RxLeanCloud.wrap(subscriber, t, e));
     }
 
     public static GetDataCallback getData(Callback<byte[]> callback) {
@@ -226,7 +226,7 @@ public class LeanCallbacks {
     }
 
     public static GetDataCallback getDataRx(Subscriber<? super byte[]> subscriber) {
-        return getData((bytes, e) -> LeanWrap.wrap(subscriber, bytes, e));
+        return getData((bytes, e) -> RxLeanCloud.wrap(subscriber, bytes, e));
     }
 
     public static <T extends AVFile> GetFileCallback<T> getFile(Callback<T> callback) {
@@ -238,7 +238,7 @@ public class LeanCallbacks {
     }
 
     public static <T extends AVFile> GetFileCallback<T> getFileRx(Subscriber<? super T> subscriber) {
-        return getFile((t, e) -> LeanWrap.wrap(subscriber, t, e));
+        return getFile((t, e) -> RxLeanCloud.wrap(subscriber, t, e));
     }
 
     public static InboxStatusFindCallback inboxStatusFind(Callback<List<AVStatus>> callback) {
@@ -250,7 +250,7 @@ public class LeanCallbacks {
     }
 
     public static InboxStatusFindCallback inboxStatusFindRx(Subscriber<? super List<AVStatus>> subscriber) {
-        return inboxStatusFind((avStatuses, e) -> LeanWrap.wrap(subscriber, avStatuses, e));
+        return inboxStatusFind((avStatuses, e) -> RxLeanCloud.wrap(subscriber, avStatuses, e));
     }
 
     public static <T extends AVUser> LogInCallback<T> login(Callback<T> callback) {
@@ -262,7 +262,7 @@ public class LeanCallbacks {
     }
 
     public static <T extends AVUser> LogInCallback<T> loginRx(Subscriber<? super T> subscriber) {
-        return login((t, e) -> LeanWrap.wrap(subscriber, t, e));
+        return login((t, e) -> RxLeanCloud.wrap(subscriber, t, e));
     }
 
     public static ProgressCallback progress(Callback<Integer> callback) {
@@ -274,7 +274,7 @@ public class LeanCallbacks {
     }
 
     public static ProgressCallback progressRx(Subscriber<? super Integer> subscriber) {
-        return progress((integer, e) -> LeanWrap.wrap(subscriber, integer, null));
+        return progress((integer, e) -> RxLeanCloud.wrap(subscriber, integer, null));
     }
 
     public static <T extends AVObject> RefreshCallback<T> refresh(Callback<T> callback) {
@@ -286,7 +286,7 @@ public class LeanCallbacks {
     }
 
     public static <T extends AVObject> RefreshCallback<T> refreshRx(Subscriber<? super T> subscriber) {
-        return refresh((t, e) -> LeanWrap.wrap(subscriber, t, e));
+        return refresh((t, e) -> RxLeanCloud.wrap(subscriber, t, e));
     }
 
     public static RequestEmailVerifyCallback requestEmailVerify(Callback<Void> callback) {
@@ -298,7 +298,7 @@ public class LeanCallbacks {
     }
 
     public static RequestEmailVerifyCallback requestEmailVerifyRx(Subscriber<? super Void> subscriber) {
-        return requestEmailVerify((aVoid, e) -> LeanWrap.wrap(subscriber, aVoid, e));
+        return requestEmailVerify((aVoid, e) -> RxLeanCloud.wrap(subscriber, aVoid, e));
     }
 
     public static RequestMobileCodeCallback requestMobileCode(Callback<Void> callback) {
@@ -310,7 +310,7 @@ public class LeanCallbacks {
     }
 
     public static RequestMobileCodeCallback requestMobileCodeRx(Subscriber<? super Void> subscriber) {
-        return requestMobileCode((aVoid, e) -> LeanWrap.wrap(subscriber, aVoid, e));
+        return requestMobileCode((aVoid, e) -> RxLeanCloud.wrap(subscriber, aVoid, e));
     }
 
     public static RequestPasswordResetCallback requestPasswordReset(Callback<Void> callback) {
@@ -322,7 +322,7 @@ public class LeanCallbacks {
     }
 
     public static RequestPasswordResetCallback requestPasswordResetRx(Subscriber<? super Void> subscriber) {
-        return requestPasswordReset((aVoid, e) -> LeanWrap.wrap(subscriber, aVoid, e));
+        return requestPasswordReset((aVoid, e) -> RxLeanCloud.wrap(subscriber, aVoid, e));
     }
 
     public static SendCallback send(Callback<Void> callback) {
@@ -334,7 +334,7 @@ public class LeanCallbacks {
     }
 
     public static SendCallback sendRx(Subscriber<? super Void> subscriber) {
-        return send((aVoid, e) -> LeanWrap.wrap(subscriber, aVoid, e));
+        return send((aVoid, e) -> RxLeanCloud.wrap(subscriber, aVoid, e));
     }
 
     public static SignUpCallback signUp(Callback<Void> callback) {
@@ -346,7 +346,7 @@ public class LeanCallbacks {
     }
 
     public static SignUpCallback signUpRx(Subscriber<? super Void> subscriber) {
-        return signUp((aVoid, e) -> LeanWrap.wrap(subscriber, aVoid, e));
+        return signUp((aVoid, e) -> RxLeanCloud.wrap(subscriber, aVoid, e));
     }
 
     public static StatusCallback status(Callback<AVStatus> callback) {
@@ -358,7 +358,7 @@ public class LeanCallbacks {
     }
 
     public static StatusCallback statusRx(Subscriber<? super AVStatus> subscriber) {
-        return status((avStatus, e) -> LeanWrap.wrap(subscriber, avStatus, e));
+        return status((avStatus, e) -> RxLeanCloud.wrap(subscriber, avStatus, e));
     }
 
     public static StatusListCallback statusList(Callback<List<AVStatus>> callback) {
@@ -370,7 +370,7 @@ public class LeanCallbacks {
     }
 
     public static StatusListCallback statusListRx(Subscriber<? super List<AVStatus>> subscriber) {
-        return statusList((avStatuses, e) -> LeanWrap.wrap(subscriber, avStatuses, e));
+        return statusList((avStatuses, e) -> RxLeanCloud.wrap(subscriber, avStatuses, e));
     }
 
     public static UpdatePasswordCallback updatePassword(Callback<Void> callback) {
@@ -382,6 +382,6 @@ public class LeanCallbacks {
     }
 
     public static UpdatePasswordCallback updatePasswordRx(Subscriber<? super Void> subscriber) {
-        return updatePassword((aVoid, e) -> LeanWrap.wrap(subscriber, aVoid, e));
+        return updatePassword((aVoid, e) -> RxLeanCloud.wrap(subscriber, aVoid, e));
     }
 }
