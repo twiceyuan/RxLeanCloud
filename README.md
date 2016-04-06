@@ -3,9 +3,9 @@
 [![](https://jitpack.io/v/twiceyuan/RxLeanCloud.svg)](https://jitpack.io/#twiceyuan/RxLeanCloud)
 [![](https://travis-ci.org/twiceyuan/RxLeanCloud.svg?branch=master)](https://travis-ci.org/twiceyuan/RxLeanCloud)
 
-RxJava + LeanCloud Android SDK（WIP）
+RxJava + LeanCloud Android SDK （with Retrolambda）
 
-LeanCloud Android SDK 有很多的异步方法，它们大多数情况下需要嵌套执行，所以你的代码很可能是这种形状的：
+LeanCloud Android SDK 有很多的异步方法，它们大多数情况下需要嵌套执行，所以代码很可能是这种形状的：
 
     ---
         ----
@@ -60,9 +60,9 @@ Observable.create(subscriber -> {
 
 好吧，看起来更复杂了。不过这样却有这样做的好处：使用 RxJava 能让嵌套层级增加的同时保持代码的线性逻辑，使之更方便的组合串联。
 
-## RxLeanCloud
+### RxLeanCloud
 
-使用本项目的话可以进一步简化封装的过程：
+使用 RxLeanCloud 的话可以进一步简化封装的过程：
 
 ```Java
 LeanWrap.save(object::saveInBackground).subscribe(aVoid -> Log.i("saved", "save success!"));
