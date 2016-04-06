@@ -65,12 +65,12 @@ Observable.create(subscriber -> {
 使用 RxLeanCloud 的话可以进一步简化封装的过程：
 
 ```Java
-LeanWrap.save(object::saveInBackground).subscribe(aVoid -> Log.i("saved", "save success!"));
+RxLeanCloud.save(object::saveInBackground).subscribe(aVoid -> Log.i("saved", "save success!"));
 ```
 
 ### 引入方法：
 
-```Grovvy
+```gradle
 allprojects {
     repositories {
         // ...
@@ -83,3 +83,6 @@ dependencies {
 }
 ```
 
+### 许可
+
+WTFPL。
