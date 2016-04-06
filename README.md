@@ -33,6 +33,8 @@ object.saveInBackground(new SaveCallback() {
 });
 ```
 
+### 普通 Rx 封装
+
 如果用 RxJava 直接封装的话，需要这样做：
 
 ```Java
@@ -57,10 +59,26 @@ Observable.create(subscriber -> {
 
 好吧，看起来更复杂了。不过这样却有这样做的好处：使用 RxJava 能让嵌套层级增加的同时保持代码的线性逻辑，使之更方便的组合串联。
 
+## RxLeanCloud
+
 使用本项目的话可以进一步简化封装的过程：
 
 ```Java
 LeanWrap.save(object::saveInBackground).subscribe(aVoid -> Log.i("saved", "save success!"));
 ```
 
-目前项目还在进行，更多例子会尽快添加到这个文档中。
+### 引入方法：
+
+```Grovvy
+allprojects {
+    repositories {
+        // ...
+        maven { url "https://jitpack.io" }
+    }
+}
+
+dependencies {
+    compile 'com.github.twiceyuan:RxLeanCloud:1.0-alpha'
+}
+```
+
