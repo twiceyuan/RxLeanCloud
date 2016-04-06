@@ -2,6 +2,9 @@ before_install:
  - chmod +x gradlew
 
 language: android
+jdk:
+  - oraclejdk7
+  - oraclejdk8
 android:
   components:
     - tools
@@ -10,7 +13,12 @@ android:
     - extra-android-support
     - extra-android-m2repository
     - extra-google-m2repository
-
+  licenses:
+    - '.+'
+before_install:
+  - export JAVA7_HOME=/usr/lib/jvm/java-7-oracle
+  - export JAVA8_HOME=/usr/lib/jvm/java-8-oracle
+  - export JAVA_HOME=$JAVA7_HOME
     # Uncomment the lines below if you want to
     # use the latest revision of Android SDK Tools
     # - platform-tools
