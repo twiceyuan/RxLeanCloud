@@ -145,15 +145,15 @@ public class LeanCallbacks {
         return serveDate((date, e) -> RxLeanCloud.wrap(subscriber, date, e));
     }
 
-    public static CloudQueryCallback<AVCloudQueryResult> cloudQuery(Callback<AVCloudQueryResult> callback) {
-        return new CloudQueryCallback<AVCloudQueryResult>() {
-            @Override public void done(AVCloudQueryResult result, AVException e) {
-                callback.call(result, e);
+    public static <T extends AVCloudQueryResult> CloudQueryCallback<T> cloudQuery(Callback<AVCloudQueryResult> callback) {
+        return new CloudQueryCallback<T>() {
+            @Override public void done(AVCloudQueryResult t, AVException e) {
+                callback.call(t, e);
             }
         };
     }
 
-    public static CloudQueryCallback<AVCloudQueryResult> cloudQueryRx(Subscriber<? super AVCloudQueryResult> subscriber) {
+    public static <T extends AVCloudQueryResult> CloudQueryCallback<T> cloudQueryRx(Subscriber<? super AVCloudQueryResult> subscriber) {
         return cloudQuery((result, e) -> RxLeanCloud.wrap(subscriber, result, e));
     }
 
@@ -201,7 +201,7 @@ public class LeanCallbacks {
         };
     }
 
-    public static <T extends AVObject> FollowersAndFolloweesCallback<T> followersAndFolloweesRx(Subscriber<? super Map<String, ? super T>> subscriber) {
+    public static <T extends AVObject> FollowersAndFolloweesCallback<T> followersAndFolloweesRx(Subscriber<? super Map<String, T>> subscriber) {
         return followersAndFollowees((stringTMap, e) -> RxLeanCloud.wrap(subscriber, stringTMap, e));
     }
 
@@ -274,7 +274,7 @@ public class LeanCallbacks {
     }
 
     public static ProgressCallback progressRx(Subscriber<? super Integer> subscriber) {
-        return progress((integer, e) -> RxLeanCloud.wrap(subscriber, integer, null));
+        return progress((integer, e) -> RxLeanCloud.wrap(subscriber, integer, e));
     }
 
     public static <T extends AVObject> RefreshCallback<T> refresh(Callback<T> callback) {

@@ -1,16 +1,41 @@
 package cn.leancloud.rx;
 
+import com.avos.avoscloud.AVCloudQueryResult;
+import com.avos.avoscloud.AVFile;
 import com.avos.avoscloud.AVFriendship;
 import com.avos.avoscloud.AVMobilePhoneVerifyCallback;
 import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.AVStatus;
+import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.CloudQueryCallback;
+import com.avos.avoscloud.CountCallback;
+import com.avos.avoscloud.DeleteCallback;
 import com.avos.avoscloud.FindCallback;
+import com.avos.avoscloud.FollowCallback;
+import com.avos.avoscloud.FollowersAndFolloweesCallback;
+import com.avos.avoscloud.FunctionCallback;
 import com.avos.avoscloud.GetCallback;
+import com.avos.avoscloud.GetDataCallback;
+import com.avos.avoscloud.GetFileCallback;
+import com.avos.avoscloud.InboxStatusFindCallback;
+import com.avos.avoscloud.LogInCallback;
+import com.avos.avoscloud.ProgressCallback;
+import com.avos.avoscloud.RefreshCallback;
+import com.avos.avoscloud.RequestEmailVerifyCallback;
+import com.avos.avoscloud.RequestMobileCodeCallback;
+import com.avos.avoscloud.RequestPasswordResetCallback;
 import com.avos.avoscloud.SaveCallback;
+import com.avos.avoscloud.SendCallback;
+import com.avos.avoscloud.SignUpCallback;
+import com.avos.avoscloud.StatusCallback;
+import com.avos.avoscloud.StatusListCallback;
+import com.avos.avoscloud.UpdatePasswordCallback;
 import com.avos.avoscloud.callback.AVFriendshipCallback;
 import com.avos.avoscloud.callback.AVServerDateCallback;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -59,83 +84,83 @@ public class RxLeanCloud {
         return Observable.create(subscriber -> callback.call(LeanCallbacks.serveDateRx(subscriber)));
     }
 
-//    public static CloudQueryCallback<AVCloudQueryResult> cloudQueryRx(Subscriber<? super AVCloudQueryResult> subscriber) {
-//        return cloudQuery((result, e) -> RxLeanCloud.wrap(subscriber, result, e));
-//    }
-//
-//    public static CountCallback countRx(Subscriber<? super Integer> subscriber) {
-//        return count((integer, e) -> RxLeanCloud.wrap(subscriber, integer, e));
-//    }
-//
-//    public static DeleteCallback deleteRx(Subscriber<? super Void> subscriber) {
-//        return delete((aVoid, e) -> RxLeanCloud.wrap(subscriber, aVoid, e));
-//    }
-//
-//    public static <T extends AVObject> FollowCallback<T> followRx(Subscriber<? super T> subscriber) {
-//        return follow((t, e) -> RxLeanCloud.wrap(subscriber, t, e));
-//    }
-//
-//    public static <T extends AVObject> FollowersAndFolloweesCallback<T> followersAndFolloweesRx(Subscriber<? super Map<String, ? super T>> subscriber) {
-//        return followersAndFollowees((stringTMap, e) -> RxLeanCloud.wrap(subscriber, stringTMap, e));
-//    }
-//
-//    public static <T> FunctionCallback<T> functionRx(Subscriber<? super T> subscriber) {
-//        return function((t, e) -> RxLeanCloud.wrap(subscriber, t, e));
-//    }
-//
-//    public static GetDataCallback getDataRx(Subscriber<? super byte[]> subscriber) {
-//        return getData((bytes, e) -> RxLeanCloud.wrap(subscriber, bytes, e));
-//    }
-//
-//    public static <T extends AVFile> GetFileCallback<T> getFileRx(Subscriber<? super T> subscriber) {
-//        return getFile((t, e) -> RxLeanCloud.wrap(subscriber, t, e));
-//    }
-//
-//    public static InboxStatusFindCallback inboxStatusFindRx(Subscriber<? super List<AVStatus>> subscriber) {
-//        return inboxStatusFind((avStatuses, e) -> RxLeanCloud.wrap(subscriber, avStatuses, e));
-//    }
-//
-//    public static <T extends AVUser> LogInCallback<T> loginRx(Subscriber<? super T> subscriber) {
-//        return login((t, e) -> RxLeanCloud.wrap(subscriber, t, e));
-//    }
-//
-//    public static ProgressCallback progressRx(Subscriber<? super Integer> subscriber) {
-//        return progress((integer, e) -> RxLeanCloud.wrap(subscriber, integer, null));
-//    }
-//
-//    public static <T extends AVObject> RefreshCallback<T> refreshRx(Subscriber<? super T> subscriber) {
-//        return refresh((t, e) -> RxLeanCloud.wrap(subscriber, t, e));
-//    }
-//
-//    public static RequestEmailVerifyCallback requestEmailVerifyRx(Subscriber<? super Void> subscriber) {
-//        return requestEmailVerify((aVoid, e) -> RxLeanCloud.wrap(subscriber, aVoid, e));
-//    }
-//
-//    public static RequestMobileCodeCallback requestMobileCodeRx(Subscriber<? super Void> subscriber) {
-//        return requestMobileCode((aVoid, e) -> RxLeanCloud.wrap(subscriber, aVoid, e));
-//    }
-//
-//    public static RequestPasswordResetCallback requestPasswordResetRx(Subscriber<? super Void> subscriber) {
-//        return requestPasswordReset((aVoid, e) -> RxLeanCloud.wrap(subscriber, aVoid, e));
-//    }
-//
-//    public static SendCallback sendRx(Subscriber<? super Void> subscriber) {
-//        return send((aVoid, e) -> RxLeanCloud.wrap(subscriber, aVoid, e));
-//    }
-//
-//    public static SignUpCallback signUpRx(Subscriber<? super Void> subscriber) {
-//        return signUp((aVoid, e) -> RxLeanCloud.wrap(subscriber, aVoid, e));
-//    }
-//
-//    public static StatusCallback statusRx(Subscriber<? super AVStatus> subscriber) {
-//        return status((avStatus, e) -> RxLeanCloud.wrap(subscriber, avStatus, e));
-//    }
-//
-//    public static StatusListCallback statusListRx(Subscriber<? super List<AVStatus>> subscriber) {
-//        return statusList((avStatuses, e) -> RxLeanCloud.wrap(subscriber, avStatuses, e));
-//    }
-//
-//    public static UpdatePasswordCallback updatePasswordRx(Subscriber<? super Void> subscriber) {
-//        return updatePassword((aVoid, e) -> RxLeanCloud.wrap(subscriber, aVoid, e));
-//    }
+    public static <T extends AVCloudQueryResult> Observable<AVCloudQueryResult> cloudQuery(Action1<CloudQueryCallback<T>> callback) {
+        return Observable.create(subscriber -> callback.call(LeanCallbacks.cloudQueryRx(subscriber)));
+    }
+
+    public static Observable<Integer> count(Action1<CountCallback> callback) {
+        return Observable.create(subscriber -> callback.call(LeanCallbacks.countRx(subscriber)));
+    }
+
+    public static Observable<Void> delete(Action1<DeleteCallback> callback) {
+        return Observable.create(subscriber -> callback.call(LeanCallbacks.deleteRx(subscriber)));
+    }
+
+    public static <T extends AVObject> Observable<T> follow(Action1<FollowCallback<T>> callback) {
+        return Observable.create(subscriber -> callback.call(LeanCallbacks.followRx(subscriber)));
+    }
+
+    public static <T extends AVObject> Observable<Map<String, T>> followerAndFollowees(Action1<FollowersAndFolloweesCallback<T>> callback) {
+        return Observable.create(subscriber -> callback.call(LeanCallbacks.followersAndFolloweesRx(subscriber)));
+    }
+
+    public static <T> Observable<T> function(Action1<FunctionCallback<T>> callback) {
+        return Observable.create((Observable.OnSubscribe<T>) (subscriber) -> callback.call(LeanCallbacks.functionRx(subscriber)));
+    }
+
+    public static Observable<byte[]> getData(Action1<GetDataCallback> callback) {
+        return Observable.create(subscriber -> callback.call(LeanCallbacks.getDataRx(subscriber)));
+    }
+
+    public static <T extends AVFile> Observable<T> getFile(Action1<GetFileCallback<T>> callback) {
+        return Observable.create(subscriber -> callback.call(LeanCallbacks.getFileRx(subscriber)));
+    }
+
+    public static Observable<List<AVStatus>> inboxStatusFind(Action1<InboxStatusFindCallback> callback) {
+        return Observable.create(subscriber -> callback.call(LeanCallbacks.inboxStatusFindRx(subscriber)));
+    }
+
+    public static <T extends AVUser> Observable<T> login(Action1<LogInCallback<T>> callback) {
+        return Observable.create(subscriber -> callback.call(LeanCallbacks.loginRx(subscriber)));
+    }
+
+    public static Observable<Integer> progress(Action1<ProgressCallback> callback) {
+        return Observable.create(subscriber -> callback.call(LeanCallbacks.progressRx(subscriber)));
+    }
+
+    public static <T extends AVObject> Observable<T> refresh(Action1<RefreshCallback<T>> callback) {
+        return Observable.create(subscriber -> callback.call(LeanCallbacks.refreshRx(subscriber)));
+    }
+
+    public static Observable<Void> requestEmailVerify(Action1<RequestEmailVerifyCallback> callback) {
+        return Observable.create(subscriber -> callback.call(LeanCallbacks.requestEmailVerifyRx(subscriber)));
+    }
+
+    public static Observable<Void> requestMobileCode(Action1<RequestMobileCodeCallback> callback) {
+        return Observable.create(subscriber -> callback.call(LeanCallbacks.requestMobileCodeRx(subscriber)));
+    }
+
+    public static Observable<Void> requestPasswordReset(Action1<RequestPasswordResetCallback> callback) {
+        return Observable.create(subscriber -> callback.call(LeanCallbacks.requestPasswordResetRx(subscriber)));
+    }
+
+    public static Observable<Void> send(Action1<SendCallback> callback) {
+        return Observable.create(subscriber -> callback.call(LeanCallbacks.sendRx(subscriber)));
+    }
+
+    public static Observable<Void> signUp(Action1<SignUpCallback> callback) {
+        return Observable.create(subscriber -> callback.call(LeanCallbacks.signUpRx(subscriber)));
+    }
+
+    public static Observable<AVStatus> status(Action1<StatusCallback> callback) {
+        return Observable.create(subscriber -> callback.call(LeanCallbacks.statusRx(subscriber)));
+    }
+
+    public static Observable<List<AVStatus>> statusList(Action1<StatusListCallback> callback) {
+        return Observable.create(subscriber -> callback.call(LeanCallbacks.statusListRx(subscriber)));
+    }
+
+    public static Observable<Void> updatePassword(Action1<UpdatePasswordCallback> callback) {
+        return Observable.create(subscriber -> callback.call(LeanCallbacks.updatePasswordRx(subscriber)));
+    }
 }
