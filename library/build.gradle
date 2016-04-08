@@ -34,11 +34,13 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.2.1'
     compile 'io.reactivex:rxandroid:1.1.0'
 
     // avoscloud-sdk 为 LeanCloud基础包
     compile ('cn.leancloud.android:avoscloud-sdk:v3.+')
+
+    //avoscloud-push 为推送与实时聊天需要的包
+    compile('cn.leancloud.android:avoscloud-push:v3.+@aar') { transitive = true }
 }
 
 // build a jar with source files

@@ -41,8 +41,11 @@ dependencies {
     compile project(':library')
     // compile 'com.github.twiceyuan:RxLeanCloud:alpha'
 
-    compile 'com.android.support:appcompat-v7:23.2.1'
+    compile 'com.android.support:appcompat-v7:23.3.0'
 
     // avoscloud-sdk 为 LeanCloud基础包
     compile('cn.leancloud.android:avoscloud-sdk:v3.13.5')
+
+    //avoscloud-push 为推送与实时聊天需要的包
+    compile('cn.leancloud.android:avoscloud-push:v3.+@aar') { transitive = true }
 }

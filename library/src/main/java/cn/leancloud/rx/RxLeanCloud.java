@@ -32,6 +32,17 @@ import com.avos.avoscloud.StatusListCallback;
 import com.avos.avoscloud.UpdatePasswordCallback;
 import com.avos.avoscloud.callback.AVFriendshipCallback;
 import com.avos.avoscloud.callback.AVServerDateCallback;
+import com.avos.avoscloud.im.v2.AVIMClient;
+import com.avos.avoscloud.im.v2.AVIMConversation;
+import com.avos.avoscloud.im.v2.AVIMMessage;
+import com.avos.avoscloud.im.v2.callback.AVIMClientStatusCallback;
+import com.avos.avoscloud.im.v2.callback.AVIMConversationCallback;
+import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
+import com.avos.avoscloud.im.v2.callback.AVIMConversationMemberCountCallback;
+import com.avos.avoscloud.im.v2.callback.AVIMConversationQueryCallback;
+import com.avos.avoscloud.im.v2.callback.AVIMMessagesQueryCallback;
+import com.avos.avoscloud.im.v2.callback.AVIMOnlineClientsCallback;
+import com.avos.avoscloud.im.v2.callback.AVIMSingleMessageQueryCallback;
 
 import java.util.Date;
 import java.util.List;
@@ -162,5 +173,41 @@ public class RxLeanCloud {
 
     public static Observable<Void> updatePassword(Action1<UpdatePasswordCallback> callback) {
         return Observable.create(subscriber -> callback.call(LeanCallbacks.updatePasswordRx(subscriber)));
+    }
+
+    /*******************************************************************************************
+     * ************************************ 即时通讯相关回调 *************************************
+     *******************************************************************************************/
+
+    public static Observable<AVIMClient.AVIMClientStatus> clientStatus(Action1<AVIMClientStatusCallback> callback) {
+        return Observable.create(subscriber -> callback.call(LeanCallbacks.clientStatusRx(subscriber)));
+    }
+
+    public static Observable<Void> conversation(Action1<AVIMConversationCallback> callback) {
+        return Observable.create(subscriber -> callback.call(LeanCallbacks.conversationRx(subscriber)));
+    }
+
+    public static Observable<AVIMConversation> conversationCreated(Action1<AVIMConversationCreatedCallback> callback) {
+        return Observable.create(subscriber -> callback.call(LeanCallbacks.conversationCreatedRx(subscriber)));
+    }
+
+    public static Observable<Integer> conversationMemberCount(Action1<AVIMConversationMemberCountCallback> callback) {
+        return Observable.create(subscriber -> callback.call(LeanCallbacks.conversationMemberCountRx(subscriber)));
+    }
+
+    public static Observable<List<AVIMConversation>> conversationQuery(Action1<AVIMConversationQueryCallback> callback) {
+        return Observable.create(subscriber -> callback.call(LeanCallbacks.conversationQueryRx(subscriber)));
+    }
+
+    public static Observable<List<AVIMMessage>> messagesQuery(Action1<AVIMMessagesQueryCallback> callback) {
+        return Observable.create(subscriber -> callback.call(LeanCallbacks.messagesQueryRx(subscriber)));
+    }
+
+    public static Observable<List<String>> onlineClients(Action1<AVIMOnlineClientsCallback> callback) {
+        return Observable.create(subscriber -> callback.call(LeanCallbacks.onlineClientsRx(subscriber)));
+    }
+
+    public static Observable<AVIMMessage> singleMessageQuery(Action1<AVIMSingleMessageQueryCallback> callback) {
+        return Observable.create(subscriber -> callback.call(LeanCallbacks.singleMessageQueryRx(subscriber)));
     }
 }

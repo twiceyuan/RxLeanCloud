@@ -33,6 +33,19 @@ import com.avos.avoscloud.StatusListCallback;
 import com.avos.avoscloud.UpdatePasswordCallback;
 import com.avos.avoscloud.callback.AVFriendshipCallback;
 import com.avos.avoscloud.callback.AVServerDateCallback;
+import com.avos.avoscloud.im.v2.AVIMClient;
+import com.avos.avoscloud.im.v2.AVIMConversation;
+import com.avos.avoscloud.im.v2.AVIMException;
+import com.avos.avoscloud.im.v2.AVIMMessage;
+import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
+import com.avos.avoscloud.im.v2.callback.AVIMClientStatusCallback;
+import com.avos.avoscloud.im.v2.callback.AVIMConversationCallback;
+import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
+import com.avos.avoscloud.im.v2.callback.AVIMConversationMemberCountCallback;
+import com.avos.avoscloud.im.v2.callback.AVIMConversationQueryCallback;
+import com.avos.avoscloud.im.v2.callback.AVIMMessagesQueryCallback;
+import com.avos.avoscloud.im.v2.callback.AVIMOnlineClientsCallback;
+import com.avos.avoscloud.im.v2.callback.AVIMSingleMessageQueryCallback;
 
 import java.util.Date;
 import java.util.List;
@@ -383,5 +396,117 @@ public class LeanCallbacks {
 
     public static UpdatePasswordCallback updatePasswordRx(Subscriber<? super Void> subscriber) {
         return updatePassword((aVoid, e) -> RxLeanCloud.wrap(subscriber, aVoid, e));
+    }
+
+    /*******************************************************************************************
+     * ************************************ 即时通讯相关回调 *************************************
+     *******************************************************************************************/
+
+    public static AVIMClientCallback imClient(Callback<AVIMClient> callback) {
+        return new AVIMClientCallback() {
+            @Override public void done(AVIMClient avimClient, AVIMException e) {
+                callback.call(avimClient, e);
+            }
+        };
+    }
+
+    public static AVIMClientCallback imClientRx(Subscriber<? super AVIMClient> subscriber) {
+        return imClient((client, e) -> RxLeanCloud.wrap(subscriber, client, e));
+    }
+
+    public static AVIMClientStatusCallback clientStatus(Callback<AVIMClient.AVIMClientStatus> callback) {
+        return new AVIMClientStatusCallback() {
+            @Override public void done(AVIMClient.AVIMClientStatus status) {
+                callback.call(status, null);
+            }
+        };
+    }
+
+    public static AVIMClientStatusCallback clientStatusRx(Subscriber<? super AVIMClient.AVIMClientStatus> subscriber) {
+        return clientStatus((status, e) -> RxLeanCloud.wrap(subscriber, status, e));
+    }
+
+    public static AVIMConversationCallback conversation(Callback<Void> callback) {
+        return new AVIMConversationCallback() {
+            @Override public void done(AVIMException e) {
+                callback.call(null, e);
+            }
+        };
+    }
+
+    public static AVIMConversationCallback conversationRx(Subscriber<? super Void> subscriber) {
+        return conversation((aVoid, e) -> RxLeanCloud.wrap(subscriber, aVoid, e));
+    }
+
+    public static AVIMConversationCreatedCallback conversationCreated(Callback<AVIMConversation> callback) {
+        return new AVIMConversationCreatedCallback() {
+            @Override public void done(AVIMConversation conversation, AVIMException e) {
+                callback.call(conversation, e);
+            }
+        };
+    }
+
+    public static AVIMConversationCreatedCallback conversationCreatedRx(Subscriber<? super AVIMConversation> subscriber) {
+        return conversationCreated((conversation, e) -> RxLeanCloud.wrap(subscriber, conversation, e));
+    }
+
+    public static AVIMConversationMemberCountCallback conversationMemberCount(Callback<Integer> callback) {
+        return new AVIMConversationMemberCountCallback() {
+            @Override public void done(Integer integer, AVIMException e) {
+                callback.call(integer, e);
+            }
+        };
+    }
+
+    public static AVIMConversationMemberCountCallback conversationMemberCountRx(Subscriber<? super Integer> subscriber) {
+        return conversationMemberCount((integer, e) -> RxLeanCloud.wrap(subscriber, integer, e));
+    }
+
+    public static AVIMConversationQueryCallback conversationQuery(Callback<List<AVIMConversation>> callback) {
+        return new AVIMConversationQueryCallback() {
+            @Override public void done(List<AVIMConversation> list, AVIMException e) {
+                callback.call(list, e);
+            }
+        };
+    }
+
+    public static AVIMConversationQueryCallback conversationQueryRx(Subscriber<? super List<AVIMConversation>> subscriber) {
+        return conversationQuery((conversations, e) -> RxLeanCloud.wrap(subscriber, conversations, e));
+    }
+
+    public static AVIMMessagesQueryCallback messagesQuery(Callback<List<AVIMMessage>> callback) {
+        return new AVIMMessagesQueryCallback() {
+            @Override public void done(List<AVIMMessage> list, AVIMException e) {
+                callback.call(list, e);
+            }
+        };
+    }
+
+    public static AVIMMessagesQueryCallback messagesQueryRx(Subscriber<? super List<AVIMMessage>> subscriber) {
+        return messagesQuery((messages, e) -> RxLeanCloud.wrap(subscriber, messages, e));
+    }
+
+    public static AVIMOnlineClientsCallback onlineClients(Callback<List<String>> callback) {
+        return new AVIMOnlineClientsCallback() {
+            @Override public void done(List<String> list, AVIMException e) {
+                callback.call(list, e);
+            }
+        };
+    }
+
+    public static AVIMOnlineClientsCallback onlineClientsRx(Subscriber<? super List<String>> subscriber) {
+        return onlineClients((strings, e) -> RxLeanCloud.wrap(subscriber, strings, e));
+    }
+
+    public static AVIMSingleMessageQueryCallback singleMessageQuery(Callback<AVIMMessage> callback) {
+        return new AVIMSingleMessageQueryCallback() {
+            @Override public void done(AVIMMessage avimMessage, AVIMException e) {
+                callback.call(avimMessage, e);
+            }
+        };
+    }
+
+    public static AVIMSingleMessageQueryCallback singleMessageQueryRx(Subscriber<? super AVIMMessage> subscriber) {
+        return singleMessageQuery((message, e) -> RxLeanCloud.wrap(subscriber, message, e));
     }
 }
