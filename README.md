@@ -2,6 +2,7 @@
 
 [![](https://jitpack.io/v/twiceyuan/RxLeanCloud.svg)](https://jitpack.io/#twiceyuan/RxLeanCloud)
 [![](https://travis-ci.org/twiceyuan/RxLeanCloud.svg?branch=master)](https://travis-ci.org/twiceyuan/RxLeanCloud)
+[![Awesome LeanCloud](https://img.shields.io/badge/Awesome-LeanCloud-2c97e8.svg)](http://leancloud.sexy)
 
 RxJava + LeanCloud Android SDK （with Retrolambda）
 
