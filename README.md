@@ -79,7 +79,7 @@ allprojects {
 }
 
 dependencies {
-    compile 'com.github.twiceyuan:RxLeanCloud:[版本号]' // 上访 JitPack 图标后的版本号一般为最新版
+    compile 'com.github.twiceyuan:RxLeanCloud:[版本号]' // 上方 JitPack 图标后的版本号一般为最新版
 }
 ```
 
