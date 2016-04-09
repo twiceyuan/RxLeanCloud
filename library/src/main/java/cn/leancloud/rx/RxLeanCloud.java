@@ -35,6 +35,7 @@ import com.avos.avoscloud.callback.AVServerDateCallback;
 import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMMessage;
+import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.avos.avoscloud.im.v2.callback.AVIMClientStatusCallback;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCallback;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
@@ -178,6 +179,10 @@ public class RxLeanCloud {
     /*******************************************************************************************
      * ************************************ 即时通讯相关回调 *************************************
      *******************************************************************************************/
+
+    public static Observable<AVIMClient> client(Action1<AVIMClientCallback> callback) {
+        return Observable.create(subscriber -> callback.call(LeanCallbacks.clientRx(subscriber)));
+    }
 
     public static Observable<AVIMClient.AVIMClientStatus> clientStatus(Action1<AVIMClientStatusCallback> callback) {
         return Observable.create(subscriber -> callback.call(LeanCallbacks.clientStatusRx(subscriber)));

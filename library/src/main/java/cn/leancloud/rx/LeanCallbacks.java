@@ -402,7 +402,7 @@ public class LeanCallbacks {
      * ************************************ 即时通讯相关回调 *************************************
      *******************************************************************************************/
 
-    public static AVIMClientCallback imClient(Callback<AVIMClient> callback) {
+    public static AVIMClientCallback client(Callback<AVIMClient> callback) {
         return new AVIMClientCallback() {
             @Override public void done(AVIMClient avimClient, AVIMException e) {
                 callback.call(avimClient, e);
@@ -410,8 +410,8 @@ public class LeanCallbacks {
         };
     }
 
-    public static AVIMClientCallback imClientRx(Subscriber<? super AVIMClient> subscriber) {
-        return imClient((client, e) -> RxLeanCloud.wrap(subscriber, client, e));
+    public static AVIMClientCallback clientRx(Subscriber<? super AVIMClient> subscriber) {
+        return client((client, e) -> RxLeanCloud.wrap(subscriber, client, e));
     }
 
     public static AVIMClientStatusCallback clientStatus(Callback<AVIMClient.AVIMClientStatus> callback) {
