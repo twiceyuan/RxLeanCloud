@@ -79,10 +79,10 @@ allprojects {
 }
 
 dependencies {
-    compile 'com.github.twiceyuan:RxLeanCloud:1.0-alpha'
+    compile 'com.github.twiceyuan:RxLeanCloud:[版本号]' // 上访 JitPack 图标后的版本号一般为最新版
 }
 ```
 
 ### 许可
 
-WTFPL。
+WTFPL
