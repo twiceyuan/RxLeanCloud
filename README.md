@@ -72,14 +72,14 @@ RxLeanCloud.save(object::saveInBackground).subscribe(aVoid -> Log.i("saved", "sa
 ### 如何找到对应的方法？
 
 因为 `RxLeanCloud` 是对所有 Callback 做的封装，因此命名也和 `AVCallback` 的所有子类一一对应，具体的规则就是：
-
-    // 去掉后面的 Callback，首字母变为小写
-    callbackName.replace("Callback", "")
-        .replaceFirst(
-            String.valueOf(callbackName.chatAt(0), 
-            String.valueOf(callbackName.chatAt(0).toLowCase()
-        );
-    
+```java
+// 去掉后面的 Callback，首字母变为小写
+callbackName.replace("Callback", "")
+    .replaceFirst(
+        String.valueOf(callbackName.chatAt(0), 
+        String.valueOf(callbackName.chatAt(0).toLowCase()
+    );
+```
 例如如果想找 `FoorBarCallback` 的包装方法，那么该方法就是 `RxLeanCloud.foorBar()`
 
 ### 原理
