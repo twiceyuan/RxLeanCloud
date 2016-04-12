@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.twiceyuan.rxleancloud"
+<manifest xmlns:tools="http://schemas.android.com/tools"
+          package="com.twiceyuan.rxleancloud"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- 基础模块（必须加入以下声明）START -->
@@ -12,11 +13,13 @@
 
     <application
         android:allowBackup="true"
+        android:fullBackupContent="true"
         android:name=".App"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
