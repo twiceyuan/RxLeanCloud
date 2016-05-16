@@ -3,6 +3,7 @@ package com.twiceyuan.rxleancloud;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,6 +16,8 @@ import cn.leancloud.rx.RxLeanCloud;
 import rx.Observable;
 
 public class MainActivity extends Activity {
+
+    private static final String TAG = "MainActivity";
 
     Button simpleSaveButton;
     Button simpleRxSaveButton;
@@ -88,5 +91,7 @@ public class MainActivity extends Activity {
 
     private void errorHandler(Throwable throwable) {
         Toast.makeText(MainActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
+        Log.e(TAG, throwable.getMessage(), throwable);
+        throwable.printStackTrace();
     }
 }

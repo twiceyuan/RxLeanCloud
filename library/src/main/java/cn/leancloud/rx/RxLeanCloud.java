@@ -5,6 +5,7 @@ import com.avos.avoscloud.AVFile;
 import com.avos.avoscloud.AVFriendship;
 import com.avos.avoscloud.AVMobilePhoneVerifyCallback;
 import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVStatus;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.CloudQueryCallback;
@@ -80,6 +81,14 @@ public class RxLeanCloud {
         });
     }
 
+    public static Observable<Void> save(final AVObject object) {
+        return save(new Action1<SaveCallback>() {
+            @Override public void call(SaveCallback callback) {
+                object.saveInBackground(callback);
+            }
+        });
+    }
+
     public static <T extends AVObject> Observable<List<T>> find(final Action1<FindCallback<T>> callback) {
         return Observable.create(new Observable.OnSubscribe<List<T>>() {
             @Override public void call(Subscriber<? super List<T>> subscriber) {
@@ -88,10 +97,26 @@ public class RxLeanCloud {
         });
     }
 
+    public static <T extends AVObject> Observable<List<T>> find(final AVQuery<T> query) {
+        return find(new Action1<FindCallback<T>>() {
+            @Override public void call(FindCallback<T> tFindCallback) {
+                query.findInBackground(tFindCallback);
+            }
+        });
+    }
+
     public static <T extends AVObject> Observable<T> get(final Action1<GetCallback<T>> callback) {
         return Observable.create(new Observable.OnSubscribe<T>() {
             @Override public void call(Subscriber<? super T> subscriber) {
                 callback.call(LeanCallbacks.getRx(subscriber));
+            }
+        });
+    }
+
+    public static <T extends AVObject> Observable<T> get(final String objectId, final Class<T> clazz) {
+        return get(new Action1<GetCallback<T>>() {
+            @Override public void call(GetCallback<T> tGetCallback) {
+                AVObject.getQuery(clazz).getInBackground(objectId, tGetCallback);
             }
         });
     }
@@ -136,10 +161,26 @@ public class RxLeanCloud {
         });
     }
 
+    public static <T extends AVObject> Observable<Integer> count(final AVQuery<T> query) {
+        return count(new Action1<CountCallback>() {
+            @Override public void call(CountCallback countCallback) {
+                query.countInBackground(countCallback);
+            }
+        });
+    }
+
     public static Observable<Void> delete(final Action1<DeleteCallback> callback) {
         return Observable.create(new Observable.OnSubscribe<Void>() {
             @Override public void call(Subscriber<? super Void> subscriber) {
                 callback.call(LeanCallbacks.deleteRx(subscriber));
+            }
+        });
+    }
+
+    public static <T extends AVObject> Observable<Void> delete(final AVQuery<T> query) {
+        return delete(new Action1<DeleteCallback>() {
+            @Override public void call(DeleteCallback deleteCallback) {
+                query.deleteAllInBackground(deleteCallback);
             }
         });
     }
