@@ -69,6 +69,19 @@ Observable.create(subscriber -> {
 RxLeanCloud.save(object::saveInBackground).subscribe(aVoid -> Log.i("saved", "save success!"));
 ```
 
+### 如何找到对应的方法？
+
+因为 `RxLeanCloud` 是对所有 Callback 做的封装，因此命名也和 `AVCallback` 的所有子类一一对应，具体的规则就是：
+```java
+// 去掉后面的 Callback，首字母变为小写
+callbackName.replace("Callback", "")
+    .replaceFirst(
+        String.valueOf(callbackName.chatAt(0), 
+        String.valueOf(callbackName.chatAt(0).toLowCase()
+    );
+```
+例如如果想找 `FoorBarCallback` 的包装方法，那么该方法就是 `RxLeanCloud.foorBar()`
+
 ### 原理
 
 LeanCloud 中所有异步方法都会要求传入一个集成 AVCallback 的对象，在其回调方法里对结果做处理。RxLeanCloud 的目的是将这些 Callback 都封装为 Observable，但是逐一使用 HardCode 的方式来封装既麻烦又缺乏灵活性。在调用 RxLeanCloud 的静态方法时（例如 `RxLeanCloud.save()` 方法，其对应的 SDK 方法一般为 `AVObject.saveInBackground()`），会回调一个 AVCallback 的 callback，同时返回一个该 AVCallback 的 Observable，然后在 RxLeanCloud 的静态方法回调中，直接使用 SDK 方法直接传入这个 callback 就能得到 Observable 对象了。
